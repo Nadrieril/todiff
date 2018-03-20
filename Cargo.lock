@@ -206,15 +206,16 @@ dependencies = [
  "clap 2.31.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "multiset 0.0.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "strsim 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "todo-txt 1.0.0 (git+https://github.com/Ekleog/todo-txt)",
+ "todo-txt 1.0.0 (git+https://github.com/Nadrieril/todo-txt)",
 ]
 
 [[package]]
 name = "todo-txt"
 version = "1.0.0"
-source = "git+https://github.com/Ekleog/todo-txt#71743ae513699a918359e0388368b4315939ec34"
+source = "git+https://github.com/Nadrieril/todo-txt#5971f1dc843f87b244ba1b51e0b5a3d2cbddc14f"
 dependencies = [
  "chrono 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "lazy_static 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "nom 3.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex 0.2.10 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -297,7 +298,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum textwrap 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)" = "c0b59b6b4b44d867f1370ef1bd91bfb262bf07bf0ae65c202ea2fbc16153b693"
 "checksum thread_local 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)" = "279ef31c19ededf577bfd12dfae728040a21f635b06a24cd670ff510edd38963"
 "checksum time 0.1.39 (registry+https://github.com/rust-lang/crates.io-index)" = "a15375f1df02096fb3317256ce2cee6a1f42fc84ea5ad5fc8c421cfe40c73098"
-"checksum todo-txt 1.0.0 (git+https://github.com/Ekleog/todo-txt)" = "<none>"
+"checksum todo-txt 1.0.0 (git+https://github.com/Nadrieril/todo-txt)" = "<none>"
 "checksum ucd-util 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "fd2be2d6639d0f8fe6cdda291ad456e23629558d466e2789d2c3e9892bda285d"
 "checksum unicode-width 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)" = "bf3a113775714a22dcb774d8ea3655c53a32debae63a063acc00a91cc586245f"
 "checksum unreachable 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "382810877fe448991dfc7f0dd6e3ae5d58088fd0ea5e35189655f84e6814fa56"
