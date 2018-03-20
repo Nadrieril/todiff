@@ -314,6 +314,20 @@ fn main() {
         }
         println!();
     }
+
+    {
+        let deleted_tasks = changeset.iter().filter(|t| t.to.is_empty()).collect::<Vec<_>>();
+        if !deleted_tasks.is_empty() {
+            println!("Deleted tasks:");
+            for t in deleted_tasks {
+                println!(" → {}", t.orig);
+            }
+        }
+        println!();
+    }
+
+    changeset.retain(|t| !t.to.is_empty());
+
     if changeset.is_empty() {
         println!("No changed tasks.\n");
     } else {
