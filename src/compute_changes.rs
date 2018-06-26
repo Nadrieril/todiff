@@ -223,9 +223,7 @@ pub fn changes_between(from: &Task, to: &Task) -> Vec<Changes> {
         } else {
             to_prio = None;
         }
-        if !(done_finished_at && to_prio.is_none()) {
-            res.push(Priority(from_prio, to_prio));
-        }
+        res.push(Priority(from_prio, to_prio));
     }
     if from.tags != to.tags {
         let mut from_t = from

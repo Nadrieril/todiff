@@ -93,7 +93,11 @@ impl Test for MergeTest {
         // Test 3-way merges
         let allowed_divergence = self.allowed_divergence.unwrap_or(0);
         let computed_changes = merge_3way(self.from, self.left, self.right, allowed_divergence);
-        assert_eq!(self.result.trim(), merge_to_string(computed_changes));
+        assert_eq!(
+            self.result.trim(),
+            merge_to_string(computed_changes),
+            "Mismatching merge result"
+        );
     }
 }
 

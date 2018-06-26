@@ -242,6 +242,20 @@ change_subject_threshold:
       - Subject("do a thing", "do an thing")
     - Deleted
 
+complete_and_prio:
+  from:
+    - (A) 2010-01-01 conquer the world
+
+  to:
+    - x 2010-01-01 2010-01-01 conquer the world
+
+  new: []
+
+  changes:
+    - Changed:
+      - FinishedAt(2010-01-01)
+      - Priority(Some('A'), None)
+
 recurrable_changed:
   allowed_divergence: 40
 

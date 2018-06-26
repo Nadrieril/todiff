@@ -59,7 +59,7 @@ conflict:
     do an thing
     >>>>>
 
-conflict_and_surrounding changes:
+conflict_and_surrounding_changes:
   allowed_divergence: 20
   from:
     - conquer the worlds
@@ -86,6 +86,19 @@ conflict_and_surrounding changes:
     do an thing
     >>>>>
     eat some fruits
+
+complete_and_prio:
+  from:
+    - (A) 2010-01-01 conquer the world
+
+  left:
+    - (A) 2010-01-01 conquer the world
+
+  right:
+    - x 2010-01-01 2010-01-01 conquer the world
+
+  result: |
+    x 2010-01-01 2010-01-01 conquer the world
 
 # TODO: better conflict resolution ?
 recurrence_conflict:

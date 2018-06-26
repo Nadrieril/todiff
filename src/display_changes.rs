@@ -54,7 +54,7 @@ where
     }
 }
 
-fn change_str(colorize: bool, c: &Changes) -> Vec<ANSIString> {
+fn change_str<'a>(colorize: bool, c: &Changes, all_changes: &Vec<Changes>) -> Vec<ANSIString<'a>> {
     use self::Changes::*;
     match *c {
         Created => vec!["created".into()],
@@ -66,7 +66,11 @@ fn change_str(colorize: bool, c: &Changes) -> Vec<ANSIString> {
 
         Finished(true) => vec!["completed".into()],
         Finished(false) => vec!["uncompleted".into()],
-        Priority(_, None) => vec!["removed priority".into()],
+        Priority(_, None) => if all_changes.iter().any(is_completion) {
+            vec![]
+        } else {
+            vec!["removed priority".into()]
+        },
         Priority(None, Some(c)) => vec![format!("added priority ({})", c).into()],
         Priority(Some(_), Some(b)) => vec![format!("set priority to ({})", b).into()],
         FinishDate(_, None) => vec!["removed completion date".into()],
@@ -134,18 +138,18 @@ fn display_changes(colorize: bool, chgs_for_me: &Vec<Changes>) {
     use itertools::Position::*;
     print!("    → ");
     for c in chgs_for_me.into_iter().with_position() {
+        let chg = change_str(colorize, &c.into_inner(), chgs_for_me);
         match c {
-            First(c) | Only(c) => {
-                let chg = change_str(colorize, &c);
+            First(_) | Only(_) => {
                 let mut chars = chg[0].chars();
                 let first_char = chars.next().expect("Internal error E004").to_uppercase();
                 print!("{}{}{}", first_char, chars.as_str(), ANSIStrings(&chg[1..]));
             }
-            Middle(c) => {
-                print!(", {}", ANSIStrings(&change_str(colorize, &c)));
+            Middle(_) => {
+                print!(", {}", ANSIStrings(&chg));
             }
-            Last(c) => {
-                print!(" and {}", ANSIStrings(&change_str(colorize, &c)));
+            Last(_) => {
+                print!(" and {}", ANSIStrings(&chg));
             }
         };
     }
