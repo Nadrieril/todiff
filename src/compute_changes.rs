@@ -253,6 +253,71 @@ fn changes_between_rec(from: &Task, to: &Task, recspec: &str) -> Vec<Changes> {
         .collect::<Vec<Changes>>()
 }
 
+fn postpone_task(mut task: Task, delta: Duration) -> Task {
+    if let Some(due) = task.due_date {
+        task.due_date = due.checked_add_signed(delta);
+    }
+    if let Some(threshold) = task.threshold_date {
+        task.threshold_date = threshold.checked_add_signed(delta);
+    }
+    task
+}
+
+fn apply_changes(mut task: Task, changes: Vec<Changes>) -> Task {
+    use self::Changes::*;
+    for chg in changes {
+        match chg {
+            Created => {}
+            RecurredStrict => {
+                task = recur_task(&task, &task.tags["rec"]).0;
+            }
+            RecurredFrom(_) => {
+                task = recur_task(&task, &task.tags["rec"]).0;
+            }
+            FinishedAt(d) => {
+                task.finished = true;
+                task.finish_date = Some(d);
+            }
+            PostponedStrictBy(d) => task = postpone_task(task, d),
+            Finished(b) => task.finished = b,
+            Priority(_, None) => task.priority = 26,
+            Priority(_, Some(p)) => task.priority = (p as u8) - b'A',
+            FinishDate(_, d) => task.finish_date = d,
+            CreateDate(_, d) => task.create_date = d,
+            DueDate(_, d) => task.due_date = d,
+            ThresholdDate(_, d) => task.threshold_date = d,
+            Subject(_, s) => task.subject = s,
+            Tags(a, b) => {
+                a.into_iter().for_each(|(k, _)| {
+                    task.tags.remove(&k);
+                });
+                b.into_iter().for_each(|(k, v)| {
+                    task.tags.insert(k, v);
+                });
+            }
+        }
+    }
+    task
+}
+
+pub fn apply_changes_delta(task: Task, delta: TaskDelta<Vec<Changes>>) -> Vec<Task> {
+    use self::TaskDelta::*;
+    if delta == Deleted {
+        return vec![];
+    }
+    if delta == Identical {
+        return vec![task];
+    }
+
+    let mut cnt_task = task;
+    let mut res = vec![];
+    for changes in delta {
+        cnt_task = apply_changes(cnt_task, changes);
+        res.push(cnt_task.clone());
+    }
+    res
+}
+
 pub fn remove_common<T: Clone + Eq>(a: &mut Vec<T>, b: &mut Vec<T>) -> Vec<T> {
     a.clone()
         .into_iter()

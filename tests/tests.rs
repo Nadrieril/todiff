@@ -73,6 +73,22 @@ impl Test for ChangesetTest {
             (computed_new_as_str, computed_changes_as_strs),
             "Mismatching new tasks/changes"
         );
+
+        // Test that applying back the changes to the original list gives what is expected
+        let new_to = self
+            .from
+            .into_iter()
+            .zip(computed_changes)
+            .flat_map(|(t, changes)| apply_changes_delta(t, changes.delta))
+            .chain(self.new)
+            .collect::<Vec<Task>>();
+
+        let mut old_to_str = tasks_to_strings(&self.to);
+        let mut new_to_str = tasks_to_strings(&new_to);
+        old_to_str.sort();
+        new_to_str.sort();
+
+        assert_eq!(old_to_str, new_to_str, "Replaying changes failed");
     }
 }
 
